@@ -115,4 +115,29 @@ uint8_t NVIC_GetActiveFlag(IRQ_t IRQNum, uint8_t* Val)
 	return Local_u8ErrState;
 }
 
+uint8_t NVIC_SetPriority(IRQ_t IRQNum, uint8_t Priority)
+{
+	uint8_t Local_u8ErrState = OK;
+
+
+	if(Priority <= MIN_PRIORITY && Priority >= MAX_PRIORITY)
+	{
+		if(IRQNum > FIRST_ELEMENT && IRQNum < LAST_ELEMENT)
+		{
+			uint8_t Local_u8BitShift = (IRQNum % PRI_MOD)*PRI_MUL;
+			NVIC->IPR[IRQNum] = Priority << Local_u8BitShift;
+		}
+		else
+		{
+			Local_u8ErrState = NOK;
+		}
+	}
+	else
+	{
+		Local_u8ErrState = NOK;
+	}
+
+
+	return Local_u8ErrState;
+}
 
