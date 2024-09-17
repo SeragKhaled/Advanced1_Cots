@@ -23,6 +23,20 @@ typedef enum
 	LAST_AHB1_PERIPHERAL
 }AHB1Peripheral_t;
 
+typedef enum
+{
+	TIM1_CLK,
+	USART1_CLK = 4,
+	USART6_CLK,
+	ADC1_CLK = 8,
+	SDIO_CLK = 11,
+	SPI1_CLK,
+	SPI4EN_CLK,
+	SYSCFG_EN,
+	LAST_APB2_PERIPHERAL
+}APB2Peripheral_t;
+
+
 
 uint8_t RCC_SetClkSts(ClkType enuType_Cpy, Status enuSts_Cpy);
 uint8_t RCC_SetSysClk(ClkType enuType_Cpy);
@@ -32,7 +46,7 @@ uint8_t RCC_AHB1Enable(AHB1Peripheral_t Peripheral);
 uint8_t RCC_AHB1Disable(AHB1Peripheral_t Peripheral);
 uint8_t RCC_APB1Enable();
 uint8_t RCC_APB1Disable();
-uint8_t RCC_APB2Enable();
+uint8_t RCC_APB2Enable(APB2Peripheral_t Peripheral);
 uint8_t RCC_APB2Disable();
 
 
