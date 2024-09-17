@@ -77,6 +77,7 @@ uint8_t NVIC_u8Disable(IRQ_t IRQNum);
 uint8_t NVIC_u8SetPendingFlag(IRQ_t IRQNum);
 uint8_t NVIC_u8ClearPendingFlag(IRQ_t IRQNum);
 uint8_t NVIC_GetActiveFlag(IRQ_t IRQNum, uint8_t* Val);
+uint8_t NVIC_SetPriority(IRQ_t IRQNum, uint8_t Priority);
 
 
 #endif /* NVIC_INTERFACE_H_ */
