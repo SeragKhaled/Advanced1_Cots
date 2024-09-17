@@ -102,9 +102,19 @@ uint8_t RCC_APB1Disable()
 {
 
 }
-uint8_t RCC_APB2Enable()
+uint8_t RCC_APB2Enable(APB2Peripheral_t Peripheral)
 {
+	uint8_t Local_u8ErrState = OK;
+	if(Peripheral < LAST_APB2_PERIPHERAL && Peripheral >= TIM1_CLK)
+	{
+		RCC->APB2ENR |= (ENABLE << Peripheral);
+	}
+	else
+	{
+		Local_u8ErrState = NOK;
+	}
 
+	return Local_u8ErrState;
 }
 uint8_t RCC_APB2Disable()
 {

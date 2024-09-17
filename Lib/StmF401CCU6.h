@@ -11,8 +11,10 @@
 
 /***************************            Core Peripheral Base Addresses          *****************************/
 
+#define SCB_BASE_ADDRESS						0xE000ED00UL
 #define NVIC_BASE_ADDRESS						0xE000E100UL
 #define SYSTICK_BASE_ADDRESS					0xE000E010UL
+
 /***************************            AHB1 Peripheral Base Addresses          *****************************/
 
 #define RCC_BASE_ADDRESS                       	0x40023800UL
@@ -40,25 +42,45 @@
 
 
 /***************************            APB2 Peripheral Base Addresses          *****************************/
+#define SYSCFG_BASE_ADDRESS						0x40013800UL
+#define EXTI_BASE_ADDRESS						0x40013C00UL
 
+/**********************         System Control Block Register Definition Structure         ***********************/
+typedef struct
+{
+	volatile uint32_t CPUID;				/*CPU ID Register*/
+	volatile uint32_t ICSR;					/*Interrupt Control and Status Register*/
+	volatile uint32_t VTOR;					/*Vector Table Offset Register*/
+	volatile uint32_t AIRCR;				/*Application Interrupt and Reset Control Register*/
+	volatile uint32_t SCR;					/*System Control Register*/
+	volatile uint32_t CCR;					/*Configuration and Control Register*/
+	volatile uint32_t SHPR[3];				/*System Handler Priority Registers*/
+	volatile uint32_t SHCRS;				/*System Handler Control and State Register*/
+	volatile uint32_t CFSR;					/*Configurable Fault Status Register*/
+	volatile uint32_t HFSR;					/*Hard Fault Status Register*/
+	volatile uint32_t Reserved1[2];			/*Reserved Registers*/
+	volatile uint32_t MMAR;					/*MemManage Fault Address Register*/
+	volatile uint32_t BFAR;					/*BusFault Address Register*/
+	volatile uint32_t AFSR;					/*Auxiliary Fault Address Register*/
+}SCB_RegDef_t;
 
 /***************************            NVIC Register Definition Structure           *****************************/
 
 typedef struct
 {
-	volatile uint32_t ISER[8];
-	volatile uint32_t Reserved0[24];
-	volatile uint32_t ICER[8];
-	volatile uint32_t Reserved1[24];
-	volatile uint32_t ISPR[8];
-	volatile uint32_t Reserved2[24];
-	volatile uint32_t ICPR[8];
-	volatile uint32_t Reserved3[24];
-	volatile uint32_t IABR[8];
-	volatile uint32_t Reserved4[24];
-	volatile uint8_t IPR[240];
-	volatile uint32_t Reserved5[644];
-	volatile uint32_t STIR;
+	volatile uint32_t ISER[8];					/*NVIC Set Enable Registers*/
+	volatile uint32_t Reserved0[24];			/*RESERVED BITS*/
+	volatile uint32_t ICER[8];					/*NVIC Clear Enable Registers*/
+	volatile uint32_t Reserved1[24];			/*RESERVED BITS*/
+	volatile uint32_t ISPR[8];					/*NVIC Set Pending Registers*/
+	volatile uint32_t Reserved2[24];			/*RESERVED BITS*/
+	volatile uint32_t ICPR[8];					/*NVIC Clear Pending Registers*/
+	volatile uint32_t Reserved3[24];			/*RESERVED BITS*/
+	volatile uint32_t IABR[8];					/*NVIC Interrupt Active Bit Registers*/
+	volatile uint32_t Reserved4[24];			/*RESERVED BITS*/
+	volatile uint8_t IPR[240];					/*NVIC Interrupt Priority Registers*/
+	volatile uint32_t Reserved5[644];			/*RESERVED BITS*/
+	volatile uint32_t STIR;						/*NVIC Software Trigger Interrupt Register*/
 }NVIC_RegDef_t;
 
 /***************************            SysTick Register Definition Structure           *****************************/
@@ -72,7 +94,27 @@ typedef struct
 
 }SysTick_RegDef_t;
 
+/***************************            SYSCFG Register Definition Structure           *****************************/
 
+typedef struct
+{
+	volatile uint32_t MEMRMP;				/*SYSCFG Memory Remap Register*/
+	volatile uint32_t PMC;					/*SYSCFG Peripheral Mode Configuration Register*/
+	volatile uint32_t EXTICR[4];			/*SYSCFG External Interrupt Configuration Registers*/
+	volatile uint32_t Reserved[3];			/*Reserved Registers*/
+	volatile uint32_t CMPCR;				/*SYSCFG Compensation Cell Control Register*/
+}SYSCFG_RegDef_t;
+
+/***************************            EXTI Register Definition Structure           *****************************/
+typedef struct
+{
+	volatile uint32_t IMR;					/*EXTI Interrupt Mask Register*/
+	volatile uint32_t EMR;					/*EXTI Event Mask Register*/
+	volatile uint32_t RTSR;					/*EXTI Rising Trigger Selection Register*/
+	volatile uint32_t FTSR;					/*EXTI Falling Trigger Selection Register*/
+	volatile uint32_t SWIER;				/*EXTI Software Interrupt Event Register*/
+	volatile uint32_t PR;					/*EXTI Pending Register*/
+}EXTI_RegDef_t;
 /***************************            GPIO Register Definition Structure           *****************************/
 
 typedef struct
@@ -131,6 +173,11 @@ typedef struct
 
 }RCC_RegDef_t;
 
+
+
+/****************************            SCB Peripheral Definitions           *****************************/
+#define SCB 						((SCB_RegDef_t*) SCB_BASE_ADDRESS)
+
 /***************************            NVIC Peripheral Definitions           *****************************/
 #define NVIC						((NVIC_RegDef_t*) NVIC_BASE_ADDRESS)
 
@@ -138,20 +185,28 @@ typedef struct
 
 #define SysTick						((SysTick_RegDef_t*) SYSTICK_BASE_ADDRESS)
 
+/***************************            SYSCFG Peripheral Definitions           *****************************/
+
+#define SYSCFG						((SYSCFG_RegDef_t*) SYSCFG_BASE_ADDRESS)
+
+/***************************            EXTI Peripheral Definitions           *****************************/
+
+#define EXTI						((EXTI_RegDef_t*) EXTI_BASE_ADDRESS)
+
 /***************************            GPIO Peripheral Definitions           *****************************/
 
-#define GPIOA                    ((GPIO_RegDef_t*) GPIOA_BASE_ADDRESS)
-#define GPIOB                    ((GPIO_RegDef_t*) GPIOB_BASE_ADDRESS)
-#define GPIOC                    ((GPIO_RegDef_t*) GPIOC_BASE_ADDRESS)
-#define GPIOD                    ((GPIO_RegDef_t*) GPIOD_BASE_ADDRESS)
-#define GPIOE                    ((GPIO_RegDef_t*) GPIOE_BASE_ADDRESS)
-//#define GPIOF                    ((GPIO_RegDef_t*) GPIOF_BASE_ADDRESS)
-//#define GPIOG                    ((GPIO_RegDef_t*) GPIOG_BASE_ADDRESS)
-#define GPIOH                    ((GPIO_RegDef_t*) GPIOH_BASE_ADDRESS)
+#define GPIOA                    	((GPIO_RegDef_t*) GPIOA_BASE_ADDRESS)
+#define GPIOB                    	((GPIO_RegDef_t*) GPIOB_BASE_ADDRESS)
+#define GPIOC                    	((GPIO_RegDef_t*) GPIOC_BASE_ADDRESS)
+#define GPIOD                    	((GPIO_RegDef_t*) GPIOD_BASE_ADDRESS)
+#define GPIOE                    	((GPIO_RegDef_t*) GPIOE_BASE_ADDRESS)
+//#define GPIOF                    	((GPIO_RegDef_t*) GPIOF_BASE_ADDRESS)
+//#define GPIOG                    	((GPIO_RegDef_t*) GPIOG_BASE_ADDRESS)
+#define GPIOH                    	((GPIO_RegDef_t*) GPIOH_BASE_ADDRESS)
 
 /***************************            RCC Peripheral Definitions           *****************************/
 
-#define RCC                      ((RCC_RegDef_t*) RCC_BASE_ADDRESS)
+#define RCC                      	((RCC_RegDef_t*) RCC_BASE_ADDRESS)
 
 
 #endif /*Guard*/
