@@ -11,4 +11,10 @@
 #define NVIC_REG_SIZE 			32
 #define PIN_MASK				1
 
+#define MAX_PRIORITY			0
+#define MIN_PRIORITY			15
+
+#define PRI_MOD					4
+#define PRI_MUL					8
+
 #endif /* NVIC_PRIV_H_ */
